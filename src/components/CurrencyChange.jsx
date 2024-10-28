@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, deposit } from '../Redux/features/curencySlice';
+import { clearError, handleCurrencyChange } from '../Redux/features/curencySlice';
+import { toast } from 'react-toastify';
 
 export default function CurrencyChange() {
     const [mode, setMode] = useState('USD')
-    const [currency, setCurrency] = useState(0);
+    const [amount, setAmount] = useState(0);
     const dispatch = useDispatch()
     const isLoading = useSelector(state => state.currency.isLoading)
     const error = useSelector(state => state.currency.error)
     useEffect(() => {
         if (error) {
-            alert(error)
+            toast.error(error )
             dispatch(clearError());
         }
     }, [error])
@@ -22,18 +23,20 @@ export default function CurrencyChange() {
                 <option>select</option>
                 <option value={"USD"}>USD</option>
                 <option value={"EUR"}>EUR</option>
-                <option value={"eu"}>not know what is this</option>
+                <option value={"JPY"}>JPY</option>
+                <option value={"error"}>error</option>
+
             </select>
-            <input type="text" value={currency} onChange={(e) => {
-                setCurrency((e.target.value))
+            <input type="text" value={amount} onChange={(e) => {
+                setAmount((e.target.value))
             }
             } />
             <button onClick={() => {
-                if (isNaN(currency)) {
-                    alert("ener number please")
+                if (isNaN(amount) || amount <= 0) {
+                    toast.error("please enter a valid amount!!")
                     return
                 }
-                dispatch(deposit(mode, currency))
+                dispatch(handleCurrencyChange({ mode, amount }))
 
             }}>
                 {isLoading ? "loading" : "change currency"}
