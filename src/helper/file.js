@@ -1,6 +1,6 @@
 export default function handleErrors(error) {
   let errorMessage = null;
-console.log(error.message);
+  console.log(error);
   switch (error.message) {
     case "400":
       errorMessage = "bad request";
@@ -12,9 +12,7 @@ console.log(error.message);
       errorMessage = "internal server error";
       break;
     default:
-      errorMessage = error.message.includes("Network" | "net")
-        ? "Network error, please check your connection"
-        : "An unexpected error occurred";
+      errorMessage =  "An unexpected error occurred";
       break;
   }
   return errorMessage;
