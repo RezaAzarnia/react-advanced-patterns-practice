@@ -1,34 +1,58 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { markRead, removeBook } from '../Redux/features/booksSlice'
+import { markAsRead, removeBook } from '../Redux/features/booksSlice'
+import { toast } from 'react-toastify'
 
 export default function ShowBooks() {
     const books = useSelector(state => state.book.favoriteBooks)
     const dispatch = useDispatch()
     return (
-        <div style={{ margin: "20px" }}>
-            {books.length > 0 ?
-                books.map(book => {
-                    return (
-                        <div style={{ display: "flex", gap: "10px", justifyContent: "center", alignItems: "center" }} key={book.id}>
-                            <h1>book name is &nbsp;
-                                <span style={{ color: "purple" }}>
-                                    {book.title}
-                                </span>
+        <>
+            {
+                books.length > 0 ? (
+                    <table className='w-4/5 m-auto table-fixed '>
+                        <thead>
+                            <tr className='[&>th]:text-start [&>th]:p-4 border-b border-1 border-purple-500'>
+                                <th>Book Name</th>
+                                <th>Book  price</th>
+                                <th>status</th>
+                                <th>delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                                &nbsp;and the price is &nbsp;
-                                <span style={{ color: "purple" }}>
-                                    ${book.price}
-                                </span>
-                            </h1>
-                            <button onClick={() => dispatch(markRead(book.id))}>{book.isRead ? "readed😀" : "not read😭"}</button>
-                            <button onClick={() => dispatch(removeBook(book.id))}>delete</button>
-                        </div>
-                    )
-                })
-                :
-                <span>
-                    you don&apos;t have any books yet
-                </span>}
-        </div>
+                            {books.map((book) => {
+                                return (
+                                    <tr key={book.id} className='text-start [&>td]:p-4  border-b border-1 border-purple-300 bg-purple-200'>
+                                        <td>{book.title}</td>
+                                        <td>${book.price}</td>
+                                        <td>
+                                            <button className='px-4 py-2 text-center text-white capitalize transition-colors rounded-md outline-none bg-emerald-700 hover:bg-emerald-800'
+                                                onClick={() => dispatch(markAsRead(book.id))}
+                                            >
+                                                {book.isRead ? "readed😀" : "not read😭"}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button className='px-4 py-2 text-center text-white capitalize transition-colors bg-red-600 rounded-md outline-none hover:bg-red-700'
+                                                onClick={() => {
+                                                    dispatch(removeBook(book.id))
+                                                    toast.success(() => "book deleted successfully🙂", { theme: "colored" })
+                                                }
+                                                }
+                                            >🍔delete</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                ) :
+                    <div className='p-4 bg-red-600 rounded-md'>
+                        <h1 className='text-xl text-center text-white capitalize'>
+                            you don&apos;t have any books yet!!
+                        </h1>
+                    </div>
+            }
+        </>
     )
 }
