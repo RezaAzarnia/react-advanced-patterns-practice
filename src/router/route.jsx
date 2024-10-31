@@ -26,7 +26,12 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: () => getTodos()
+        loader: async () => {
+          const todos = getTodos()
+          return defer({
+            todos
+          })
+        }
       },
       {
         path: "singleTodo/:id",
