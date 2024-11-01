@@ -1,30 +1,29 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { changeCurrency } from "../../services/currency";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+type InitialState = {
+  currency: number;
+  error: string | undefined;
+  isLoading: boolean;
+};
+
+const initialState: InitialState = {
+  currency: 0,
+  error: "",
+  isLoading: false,
+};
 
 export const handleCurrencyChange = createAsyncThunk(
   "currency/changeCurrency",
-  async ({ mode, amount }) => {
-    const res = await fetch(
-      `https://api.frankfurter.app/latest?base=USD&symbols=${mode}`,
-      {
-        method: "GET",
-        headers: { accept: "application/json" },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to change currency");
-    }
-    const data = await res.json();
+  async ({ mode, amount }: { mode: string; amount: number }) => {
+    const data = await changeCurrency(mode);
+
     return { data, amount, mode };
   }
 );
 
 const currencySlice = createSlice({
   name: "currency",
-  initialState: {
-    currency: 0,
-    error: "",
-    isLoading: false,
-  },
+  initialState,
   reducers: {
     clearError(state) {
       state.error = "";
@@ -34,17 +33,32 @@ const currencySlice = createSlice({
     builder.addCase(handleCurrencyChange.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(handleCurrencyChange.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.currency = (
-        action.payload.amount * action.payload.data.rates[action.payload.mode]
-      ).toFixed(2);
-    });
+    builder.addCase(
+      handleCurrencyChange.fulfilled,
+      (
+        state: InitialState,
+        action: PayloadAction<{
+          mode: string;
+          amount: number;
+          data: { rates: { [key: string]: number } };
+        }>
+      ) => {
+        state.isLoading = false;
+        //calculate the currency change value by add amout to rate with the mode of that
+        state.currency = Number(
+          (
+            action.payload.amount *
+            action.payload.data.rates[action.payload.mode]
+          ).toFixed(2)
+        );
+      }
+    );
     builder.addCase(handleCurrencyChange.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message.includes("Failed to fetch")
-        ? "network error"
-        : action.error.message;
+      state.error =
+        action?.error?.message && action?.error?.message.includes("Failed to fetch")
+          ? "network error"
+          : action.error.message;
     });
   },
 });

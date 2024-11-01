@@ -1,30 +1,32 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { Book } from "@/src/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+const initialState: {
+  favoriteBooks: Book[];
+} = {
+  favoriteBooks: [],
+};
 const bookSlice = createSlice({
   name: "book",
-  initialState: {
-    favoriteBooks: [],
-  },
+  initialState,
   reducers: {
-    addBook(state, action) {
+    addBook(state, action: PayloadAction<Book>) {
       state.favoriteBooks.push(action.payload);
     },
-    markAsRead(state, action) {
-      state.favoriteBooks = state.favoriteBooks.map((book) =>
+    markAsRead(state, action: PayloadAction<number>) {
+      state.favoriteBooks = state.favoriteBooks.map((book: Book) =>
         book.id === action.payload ? { ...book, isRead: !book.isRead } : book
       );
     },
-    removeBook(state, action) {
+    removeBook(state, action: PayloadAction<number>) {
       state.favoriteBooks = state.favoriteBooks.filter(
-        (book) => book.id !== action.payload
+        (book: Book) => book.id !== action.payload
       );
     },
   },
 });
 export default bookSlice.reducer;
 export const { addBook, markAsRead, removeBook } = bookSlice.actions;
-
-
 
 // const initialState = {
 //   favoriteBooks: [],
