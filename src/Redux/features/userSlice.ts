@@ -1,19 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+const initialState: { userName: string } = {
+  userName: "",
+};
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    userName: "",
-  },
+  initialState,
   reducers: {
     addUserName: {
-      prepare(first, second) {
+      prepare(firstName: string, lastName: string) {
         return {
-          payload: { first, second },
+          payload: { firstName, lastName },
         };
       },
-      reducer(state, action) {
-        state.userName = action.payload.first + " " + action.payload.second;
+      reducer(state, action: PayloadAction<{ firstName: string; lastName: string }>) {
+        state.userName = action.payload.firstName + " " + action.payload.lastName;
       },
     },
     clearName(state) {
@@ -23,7 +25,7 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { addUserName  , clearName} = userSlice.actions;
+export const { addUserName, clearName } = userSlice.actions;
 
 // const initialState = {
 //   userName: "",

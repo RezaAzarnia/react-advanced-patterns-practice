@@ -37,9 +37,9 @@ const router = createBrowserRouter([
         path: "singleTodo/:id",
         element: <SingleTodo />,
         loader: async ({ params }) => {
-          const data = getSingleTodo(params.id)
+          const todo = getSingleTodo(params.id)
           return defer({
-            data
+            todo
           })
         },
       },

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatchAction, useSelect } from '../hooks/useRedux'
 import { NavLink } from 'react-router-dom'
 import { clearName } from '../Redux/features/userSlice'
 import Button from './Button'
@@ -10,8 +10,8 @@ const navbarData = [
     { id: 4, title: "currency", url: "/currency" },
 ]
 export default function Navbar() {
-    const username = useSelector(state => state.user.userName)
-    const dispatch = useDispatch()
+    const username = useSelect(state => state.user.userName)
+    const dispatch = useDispatchAction()
     return (
         <ul className='flex items-center justify-center w-full gap-2 p-3 my-2 rounded-full shadow-2xl'>
             {
