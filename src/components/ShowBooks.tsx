@@ -1,17 +1,18 @@
-import { useDispatchAction, useSelect } from "../hooks/useRedux";
+import { useDispatchAction } from "../hooks/useRedux";
 import { markAsRead, removeBook } from "../Redux/features/booksSlice";
 import { toast } from "react-toastify";
 import { Book } from "../types";
 
-export default function ShowBooks() {
-  const books = useSelect((state) => state.book.favoriteBooks);
+export default function ShowBooks({books} : {books : Book[]}) {
+  // const books = useSelect((state) => state.book.favoriteBooks);
   const dispatch = useDispatchAction();
   return (
     <>
       {books.length > 0 ? (
-        <table className="w-4/5 m-auto table-fixed ">
+        <table className="w-full m-auto table-fixed ">
           <thead>
             <tr className="[&>th]:text-start [&>th]:p-4 border-b border-1 border-purple-500">
+              <th>Book Id</th>
               <th>Book Name</th>
               <th>Book price</th>
               <th>status</th>
@@ -25,6 +26,7 @@ export default function ShowBooks() {
                   key={book.id}
                   className="text-start [&>td]:p-4  border-b border-1 border-purple-300 bg-purple-200"
                 >
+                  <td>{book.id}</td>
                   <td>{book.title}</td>
                   <td>${book.price}</td>
                   <td>
