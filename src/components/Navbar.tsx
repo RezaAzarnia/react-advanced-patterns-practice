@@ -8,6 +8,7 @@ const navbarData = [
     { id: 2, title: "books", url: "/books" },
     { id: 3, title: "add book", url: "/addBook" },
     { id: 4, title: "currency", url: "/currency" },
+    { id: 5, title: "counting", url: "/count" },
 ]
 export default function Navbar() {
     const username = useSelect(state => state.user.userName)
