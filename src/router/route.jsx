@@ -13,6 +13,7 @@ const SingleTodo = lazy(() => import("../pages/SingleTodo"));
 
 import { getSingleTodo, getTodos } from "../services/todos";
 import { addBookAction } from "../pages/AddBooks";
+import CountPage from "../pages/CountPage";
 
 
 const router = createBrowserRouter([
@@ -60,6 +61,12 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
+      {
+        path: "/count",
+        element: <CountPage />
+      }
+
+
     ],
   },
   {
