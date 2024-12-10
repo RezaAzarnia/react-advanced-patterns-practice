@@ -1,11 +1,11 @@
-import { useDispatchAction } from "../hooks/useRedux";
-import { markAsRead, removeBook } from "../Redux/features/booksSlice";
 import { toast } from "react-toastify";
 import { Book } from "../types";
+import { useBookStore } from "../zustand/bookStore";
 
-export default function ShowBooks({books} : {books : Book[]}) {
-  // const books = useSelect((state) => state.book.favoriteBooks);
-  const dispatch = useDispatchAction();
+export default function ShowBooks({ books }: { books: Book[] }) {
+  console.log(books);
+  const markAsRead = useBookStore(state => state.markAsread);
+  const removeBook = useBookStore(state => state.removeBook);
   return (
     <>
       {books.length > 0 ? (
@@ -32,7 +32,7 @@ export default function ShowBooks({books} : {books : Book[]}) {
                   <td>
                     <button
                       className="px-4 py-2 text-center text-white capitalize transition-colors rounded-md outline-none bg-emerald-700 hover:bg-emerald-800"
-                      onClick={() => dispatch(markAsRead(book.id))}
+                      onClick={() => markAsRead(book.id)}
                     >
                       {book.isRead ? "readed😀" : "not read😭"}
                     </button>
@@ -41,7 +41,7 @@ export default function ShowBooks({books} : {books : Book[]}) {
                     <button
                       className="px-4 py-2 text-center text-white capitalize transition-colors bg-red-600 rounded-md outline-none hover:bg-red-700"
                       onClick={() => {
-                        dispatch(removeBook(book.id));
+                        removeBook(book.id)
                         toast.success(() => "book deleted successfully🙂", {
                           theme: "colored",
                         });
@@ -56,7 +56,7 @@ export default function ShowBooks({books} : {books : Book[]}) {
           </tbody>
         </table>
       ) : (
-        <div className="p-4 bg-red-600 rounded-md">
+        <div className="p-4 bg-red-500 rounded-md">
           <h1 className="text-xl text-center text-white capitalize">
             you don&apos;t have any books yet!!
           </h1>

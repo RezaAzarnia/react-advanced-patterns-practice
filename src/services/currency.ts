@@ -3,11 +3,7 @@ import { CurrencyType } from "../types";
 export async function changeCurrency(mode: string): Promise<CurrencyType> {
   try {
     const res = await fetch(
-      `https://api.frankfurter.app/latest?base=USD&symbols=${mode}`,
-      {
-        method: "GET",
-        headers: { accept: "application/json" },
-      }
+      `https://api.currencyapi.com/v3/latest?apikey=cur_live_ebGf9K4JtcITk6nukSJ2Aos9ckpypZuZQ3SaC2ZL&currencies=${mode}`
     );
     if (!res.ok) {
       throw new Error("Failed to change currency");
@@ -18,6 +14,6 @@ export async function changeCurrency(mode: string): Promise<CurrencyType> {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
-    throw new Error("Unknown error occurred"); 
+    throw new Error("Unknown error occurred");
   }
 }

@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { addUserName } from "../Redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatchAction } from "../hooks/useRedux";
+import { useUserStore } from "../zustand/userStore";
 import Input from "./Input";
 
 export default function Login() {
   const [userName, setUserName] = useState<string>("");
-  const dispatch = useDispatchAction();
   const navigate = useNavigate();
+  const adduserName = useUserStore(state => state.addUserName)
   return (
     <div>
       <h1>login please</h1>
@@ -19,7 +18,7 @@ export default function Login() {
       />
       <button
         onClick={() => {
-          dispatch(addUserName(userName, "fatane"));
+          adduserName(userName, "fatane")
           navigate("/", { replace: true });
         }}
       >

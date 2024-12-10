@@ -1,7 +1,6 @@
-import { useDispatchAction, useSelect } from '../hooks/useRedux'
 import { NavLink } from 'react-router-dom'
-import { clearName } from '../Redux/features/userSlice'
 import Button from './Button'
+import { useUserStore } from '../zustand/userStore'
 
 const navbarData = [
     { id: 1, title: "home", url: "" },
@@ -11,8 +10,8 @@ const navbarData = [
     { id: 5, title: "counting", url: "/count" },
 ]
 export default function Navbar() {
-    const username = useSelect(state => state.user.userName)
-    const dispatch = useDispatchAction()
+    const username = useUserStore(state => state.userName)
+    const clearName = useUserStore(state => state.clearName)
     return (
         <ul className='flex items-center justify-center w-full gap-2 p-3 my-2 rounded-full shadow-2xl'>
             {
@@ -34,13 +33,17 @@ export default function Navbar() {
             <li>
                 {
                     username ?
-                        <Button
-                            onClick={() => dispatch(clearName())}
-                            className='px-2 py-1 text-base capitalize rounded-2xl'
-                        >
-                            logout
-
-                        </Button>
+                        <>
+                            <Button
+                                onClick={clearName}
+                                className='px-2 py-1 text-base capitalize rounded-2xl'
+                            >
+                                logout
+                            </Button>
+                            <span>
+                                {username}
+                            </span>
+                        </>
                         :
                         <NavLink to={"login"}
                             className={
