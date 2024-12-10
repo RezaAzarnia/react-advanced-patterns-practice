@@ -12,7 +12,6 @@ const Home = lazy(() => import("../pages/Home"));
 const SingleTodo = lazy(() => import("../pages/SingleTodo"));
 
 import { getSingleTodo, getTodos } from "../services/todos";
-import { addBookAction } from "../pages/AddBooks";
 import CountPage from "../pages/CountPage";
 
 
@@ -47,7 +46,6 @@ const router = createBrowserRouter([
       {
         path: '/addBook',
         element: <AddBooks />,
-        action: addBookAction,
       },
       {
         path: "/books",

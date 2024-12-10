@@ -15,5 +15,6 @@ export type CurrencyType = {
   amount: number;
   base: string;
   date: Date;
+  data: { [key: string]: { code: string; value: number } };
   rates: { [key: string]: number };
 };

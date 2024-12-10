@@ -5,5 +5,6 @@ export default function Currency() {
     <>
       <CurrencyChange />
       <ShowCurrency />
-    </>)
+    </>
+    )
 }

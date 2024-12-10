@@ -1,24 +1,25 @@
-import React from "react";
+import React, { memo } from "react";
 type TabPorops = {
-  name: string;
-  index: number;
+  tabName: string;
+  tabIndex: number;
   onClick: () => void;
-  activeTab: number;
+  activeTabIndex: number;
 };
-export default function TabButton({
-  index,
+function TabButton({
+  tabIndex,
   onClick,
-  activeTab,
-  name,
+  activeTabIndex,
+  tabName,
 }: TabPorops) {
   return (
     <>
       <button
         onClick={onClick}
-        className={`rounded-sm px-6 py-2 border border-black border-b-0 ${index === activeTab ? "" : "border-0"} `}
+        className={`rounded-sm px-6 py-2 border border-black border-b-0 ${tabIndex === activeTabIndex ? "" : "border-0"} `}
       >
-        {name}
+        {tabName}
       </button>
     </>
   );
 }
+export default memo(TabButton);
